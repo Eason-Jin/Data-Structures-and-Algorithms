@@ -46,7 +46,7 @@ class GraphConverter {
   }
 
   /**
-   * Takes input and converts a non weighted graph to an adjacency matrix
+   * Takes input and converts a graph to an adjacency matrix
    *
    * <p>Input format: First line contains integer N denoting the number of vertices The following N
    * lines contain the edges, with the line number denoting the vertex number Terminated by N = 0
@@ -55,7 +55,7 @@ class GraphConverter {
    * @throws NumberFormatException
    * @throws IOException
    */
-  public static int[][] convertToAdjacencyMatrix() throws NumberFormatException, IOException {
+  public static int[][] convertToAdjacencyMatrix(boolean isWeighted) throws NumberFormatException, IOException {
     BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     int order = Integer.parseInt(br.readLine());
 
@@ -64,7 +64,7 @@ class GraphConverter {
       for (int i = 0; i < order; i++) {
         StringTokenizer st = new StringTokenizer(br.readLine());
         while (st.hasMoreTokens()) {
-          graph[i][Integer.parseInt(st.nextToken())] = 1;
+          graph[i][Integer.parseInt(st.nextToken())] = isWeighted? Integer.parseInt(st.nextToken()) : 1;
         }
       }
       return graph;
@@ -104,34 +104,6 @@ class GraphConverter {
           graph.get(i).add(edge);
         }
         Collections.sort(graph.get(i), new ArrayComparator<Integer>());
-      }
-      return graph;
-    } else {
-      return null;
-    }
-  }
- 
-  /**
-   * Takes input and converts a weighted graph to an adjacency matrix, positive weights only
-   *
-   * <p>Input format: First line contains integer N denoting the number of vertices The following N
-   * lines contain the edges, with the line number denoting the vertex number Terminated by N = 0
-   *
-   * @return
-   * @throws NumberFormatException
-   * @throws IOException
-   */
-  public static int[][] convertToWeightedAdjacencyMatrix() throws NumberFormatException, IOException {
-    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    int order = Integer.parseInt(br.readLine());
-
-    if (order != 0) {
-      int[][] graph = new int[order][order];
-      for (int i = 0; i < order; i++) {
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        while (st.hasMoreTokens()) {
-          graph[i][Integer.parseInt(st.nextToken())] = Integer.parseInt(st.nextToken());
-        }
       }
       return graph;
     } else {
