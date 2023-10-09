@@ -148,15 +148,4 @@ class GraphConverter {
       return Integer.compare(o1[0], o2[0]);
     }
   }
-
-  /**
-   * Test class
-   * @param args
-   * @throws NumberFormatException
-   * @throws IOException
-   */
-  public static void main(String[] args) throws NumberFormatException, IOException {
-    int[][] graph = convertToWeightedAdjacencyMatrix();
-    System.out.println(graph);
-  }
 }
