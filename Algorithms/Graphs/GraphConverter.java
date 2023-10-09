@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.StringTokenizer;
 
@@ -46,9 +47,10 @@ class GraphConverter {
 
   /**
    * Takes input and converts a non weighted graph to an adjacency matrix
-   * 
+   *
    * <p>Input format: First line contains integer N denoting the number of vertices The following N
    * lines contain the edges, with the line number denoting the vertex number Terminated by N = 0
+   *
    * @return
    * @throws NumberFormatException
    * @throws IOException
@@ -69,5 +71,64 @@ class GraphConverter {
     } else {
       return null;
     }
+  }
+
+  /**
+   * Takes input and converts a weighted graph to an adjacency list
+   *
+   * <p>Input format: First line contains integer N denoting the number of vertices The following N
+   * lines contain the edges, with the line number denoting the vertex number Terminated by N = 0
+   *
+   * @return
+   * @throws IOException
+   * @throws NumberFormatException
+   */
+  public static HashMap<Integer, ArrayList<int[]>> convertToWeightedAdjacencyList()
+      throws NumberFormatException, IOException {
+    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    int order = Integer.parseInt(br.readLine());
+
+    if (order != 0) {
+      HashMap<Integer, ArrayList<int[]>> graph = new HashMap<Integer, ArrayList<int[]>>();
+      for (int i = 0; i < order; i++) {
+        graph.put(i, new ArrayList<int[]>());
+      }
+
+      for (int i = 0; i < order; i++) {
+        StringTokenizer st = new StringTokenizer(br.readLine());
+
+        while (st.hasMoreTokens()) {
+          int[] edge = new int[2];
+          edge[0] = Integer.parseInt(st.nextToken()); // vertex
+          edge[1] = Integer.parseInt(st.nextToken()); // weight
+          graph.get(i).add(edge);
+        }
+        Collections.sort(graph.get(i), new ArrayComparator<Integer>());
+      }
+      return graph;
+    } else {
+      return null;
+    }
+  }
+ 
+  /** Class to compare edges in weighted graphs */
+  static class ArrayComparator<T extends Comparable<T>> implements Comparator<int[]> {
+
+    @Override
+    public int compare(int[] o1, int[] o2) {
+      // Compare the first element of the list only
+      return Integer.compare(o1[0], o2[0]);
+    }
+  }
+
+  /**
+   * Test class
+   * @param args
+   * @throws NumberFormatException
+   * @throws IOException
+   */
+  public static void main(String[] args) throws NumberFormatException, IOException {
+    HashMap<Integer, ArrayList<int[]>> graph = convertToWeightedAdjacencyList();
+    System.out.println(graph);
   }
 }
