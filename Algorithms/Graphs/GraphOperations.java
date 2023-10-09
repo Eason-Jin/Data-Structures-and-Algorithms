@@ -13,11 +13,11 @@ public class GraphOperations {
    * @param graph
    * @return
    */
-  public static ArrayList<Integer> DfsList(HashMap<Integer, ArrayList<Integer>> graph) {
+  public static ArrayList<Integer> DfsList(HashMap<Integer, ArrayList<Integer>> graph, int start) {
     ArrayList<Integer> visited = new ArrayList<Integer>();
     Stack<Integer> s = new Stack<Integer>();
     if (!graph.isEmpty()) {
-      s.push(0);
+      s.push(start);
       while (!s.isEmpty()) {
         int current = s.pop();
         if (!visited.contains(current)) {
@@ -37,11 +37,11 @@ public class GraphOperations {
    * @param graph
    * @return
    */
-  public static ArrayList<Integer> BfsList(HashMap<Integer, ArrayList<Integer>> graph) {
+  public static ArrayList<Integer> BfsList(HashMap<Integer, ArrayList<Integer>> graph, int start) {
     ArrayList<Integer> visited = new ArrayList<Integer>();
     Queue<Integer> q = new LinkedList<Integer>();
     if (!graph.isEmpty()) {
-      q.add(0);
+      q.add(start);
       while (!q.isEmpty()) {
         int current = q.poll();
         if (!visited.contains(current)) {
@@ -54,4 +54,8 @@ public class GraphOperations {
     }
     return visited;
   }
+
+  // public static int findGirthList(HashMap<Integer, ArrayList<Integer>> graph) {
+    
+  // }
 }
