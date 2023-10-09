@@ -90,4 +90,45 @@ public class GraphOperations {
       return girth;
     }
   }
+
+  public static int[] findTopologicalOrderingDFS(HashMap<Integer, ArrayList<Integer>> graph) {
+    if (graph == null || graph.isEmpty()) {
+      return null;
+    }
+    Stack<Integer> order = new Stack<Integer>();
+    // DFS then reverse done time
+    Stack<Integer> stack = new Stack<>();
+    int[] colour = new int[graph.size()];
+    for (int s = 0; s < graph.size(); s++) {
+      if (colour[s] == 0) {
+        stack.push(s);
+        while (!stack.isEmpty()) {
+          int u = stack.peek();
+          // If the vertex is unvisited
+          if (colour[u] == 0) {
+            colour[u] = 1;
+          }
+          boolean allChildrenVisited = true;
+          ArrayList<Integer> children = graph.get(u);
+          for (int v : children) {
+            if (colour[v] == 0) {
+              stack.push(v);
+              allChildrenVisited = false;
+              break; // Stop looking for other children once you find an unvisited child
+            }
+          }
+
+          if (allChildrenVisited) {
+            colour[u] = 2; // Mark vertex as visited
+            order.push(stack.pop()); // Remove it from the stack
+          }
+        }
+      }
+    }
+    int[] orderArray = new int[order.size()];
+    for (int i = 0; i < orderArray.length; i++) {
+      orderArray[i] = order.pop();
+    }
+    return orderArray;
+  }
 }
