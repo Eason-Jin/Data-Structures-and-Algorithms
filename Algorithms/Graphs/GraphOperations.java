@@ -57,6 +57,14 @@ public class GraphOperations {
     return visited;
   }
 
+  /**
+   * Finds the shortest cycle by performing BFS on every vertex
+   *
+   * @param graph
+   * @param start
+   * @param end
+   * @return
+   */
   public static int findGirthList(HashMap<Integer, ArrayList<Integer>> graph) {
     if (graph == null || graph.isEmpty()) {
       return 0;
@@ -91,6 +99,12 @@ public class GraphOperations {
     }
   }
 
+  /**
+   * Find topological ordering of a graph using DFS, basically the reverse of done time
+   *
+   * @param graph
+   * @return
+   */
   public static int[] findTopologicalOrderingDFS(HashMap<Integer, ArrayList<Integer>> graph) {
     if (graph == null || graph.isEmpty()) {
       return null;
