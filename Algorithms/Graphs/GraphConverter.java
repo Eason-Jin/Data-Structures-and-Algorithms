@@ -44,4 +44,30 @@ class GraphConverter {
     }
   }
 
+  /**
+   * Takes input and converts a non weighted graph to an adjacency matrix
+   * 
+   * <p>Input format: First line contains integer N denoting the number of vertices The following N
+   * lines contain the edges, with the line number denoting the vertex number Terminated by N = 0
+   * @return
+   * @throws NumberFormatException
+   * @throws IOException
+   */
+  public static int[][] convertToAdjacencyMatrix() throws NumberFormatException, IOException {
+    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    int order = Integer.parseInt(br.readLine());
+
+    if (order != 0) {
+      int[][] graph = new int[order][order];
+      for (int i = 0; i < order; i++) {
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        while (st.hasMoreTokens()) {
+          graph[i][Integer.parseInt(st.nextToken())] = 1;
+        }
+      }
+      return graph;
+    } else {
+      return null;
+    }
+  }
 }
