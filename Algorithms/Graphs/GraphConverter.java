@@ -111,6 +111,34 @@ class GraphConverter {
     }
   }
  
+  /**
+   * Takes input and converts a weighted graph to an adjacency matrix, positive weights only
+   *
+   * <p>Input format: First line contains integer N denoting the number of vertices The following N
+   * lines contain the edges, with the line number denoting the vertex number Terminated by N = 0
+   *
+   * @return
+   * @throws NumberFormatException
+   * @throws IOException
+   */
+  public static int[][] convertToWeightedAdjacencyMatrix() throws NumberFormatException, IOException {
+    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    int order = Integer.parseInt(br.readLine());
+
+    if (order != 0) {
+      int[][] graph = new int[order][order];
+      for (int i = 0; i < order; i++) {
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        while (st.hasMoreTokens()) {
+          graph[i][Integer.parseInt(st.nextToken())] = Integer.parseInt(st.nextToken());
+        }
+      }
+      return graph;
+    } else {
+      return null;
+    }
+  }
+
   /** Class to compare edges in weighted graphs */
   static class ArrayComparator<T extends Comparable<T>> implements Comparator<int[]> {
 
@@ -128,7 +156,7 @@ class GraphConverter {
    * @throws IOException
    */
   public static void main(String[] args) throws NumberFormatException, IOException {
-    HashMap<Integer, ArrayList<int[]>> graph = convertToWeightedAdjacencyList();
+    int[][] graph = convertToWeightedAdjacencyMatrix();
     System.out.println(graph);
   }
 }
