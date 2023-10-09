@@ -24,8 +24,8 @@ public class GraphOperations {
       int current = s.pop();
       if (!visited.contains(current)) {
         visited.add(current);
-        for (int child : graph.get(current)) {
-          s.push(child);
+        for (int i = graph.get(current).size() - 1; i >= 0; i--) {
+          s.push(graph.get(current).get(i));
         }
       }
     }
@@ -61,6 +61,7 @@ public class GraphOperations {
     if (graph == null || graph.isEmpty()) {
       return 0;
     }
+    int girth = Integer.MAX_VALUE;
     int[] dist = new int[graph.size()];
     // Perform BFS from each vertex
     for (int v = 0; v < graph.size(); v++) {
@@ -77,12 +78,16 @@ public class GraphOperations {
             dist[child] = dist[current] + 1;
             q.add(child);
           } else if (child != current && dist[child] >= 0) {
-            // Found a cycle, return its depth
-            return dist[current] + dist[child] + 1;
+            // Found a cycle (min length = 3), return its depth
+            girth = Math.min(girth, dist[current] + dist[child] + 1);
           }
         }
       }
     }
-    return 0;
+    if (girth == Integer.MAX_VALUE) {
+      return -1;
+    } else {
+      return girth;
+    }
   }
 }
