@@ -146,6 +146,13 @@ public class GraphOperations {
     return orderArray;
   }
 
+  /**
+   * Find the indegree of a vertex in a list graph
+   *
+   * @param graph
+   * @param vertex
+   * @return
+   */
   public static int findIndegreeList(HashMap<Integer, ArrayList<Integer>> graph, int vertex) {
     int degree = 0;
     for (int i = 0; i < graph.size(); i++) {
@@ -156,10 +163,17 @@ public class GraphOperations {
     return degree;
   }
 
+  /**
+   * Find topological ordering of a graph using indegree
+   *
+   * @param graph
+   * @return
+   */
   public static int[] findTopologicalOrderingIndegree(HashMap<Integer, ArrayList<Integer>> graph) {
     if (graph == null || graph.isEmpty()) {
       return null;
     }
+    // Find indegrees
     int[] indegrees = new int[graph.size()];
     for (int i = 0; i < graph.size(); i++) {
       indegrees[i] = findIndegreeList(graph, i);
@@ -177,7 +191,7 @@ public class GraphOperations {
       order[count] = current;
       count++;
       for (int child : graph.get(current)) {
-        indegrees[child]--;
+        indegrees[child]--; // Remove the vertex from the graph
         if (indegrees[child] == 0) {
           q.add(child);
         }
