@@ -345,7 +345,7 @@ public class GraphOperations {
 
   /**
    * Check if a graph is bipartite
-   * 
+   *
    * @param graph
    * @return
    */
@@ -353,7 +353,7 @@ public class GraphOperations {
     if (graph == null || graph.isEmpty()) {
       return false;
     }
-    int[] set = new int[graph.size()];  // 0 = unassigned, 1 = set 1, 2 = set 2
+    int[] set = new int[graph.size()]; // 0 = unassigned, 1 = set 1, 2 = set 2
     LinkedList<Integer> queue = new LinkedList<Integer>();
 
     for (int s = 0; s < graph.size(); s++) {
@@ -364,7 +364,7 @@ public class GraphOperations {
       while (!queue.isEmpty()) {
         int u = queue.poll();
         int currentSet = set[u];
-        int nextSet = (currentSet == 1) ? 2 : 1;  // Alternate between sets 1 and 2
+        int nextSet = (currentSet == 1) ? 2 : 1; // Alternate between sets 1 and 2
 
         for (int v : graph.get(u)) {
           if (set[v] == 0) {
@@ -378,5 +378,51 @@ public class GraphOperations {
     }
 
     return true;
+  }
+
+  /**
+   * Check if a graph is cyclic
+   *
+   * @param graph
+   * @return
+   */
+  public static boolean isCyclic(HashMap<Integer, ArrayList<Integer>> graph) {
+    Stack<Integer> stack = new Stack<>();
+    int[] colour = new int[graph.size()];
+
+    for (int s = 0; s < graph.size(); s++) {
+      if (colour[s] == 0) {
+        stack.push(s);
+
+        while (!stack.isEmpty()) {
+          int u = stack.peek();
+
+          // If the vertex is unvisited
+          if (colour[u] == 0) {
+            colour[u] = 1;
+          }
+
+          boolean allChildrenVisited = true;
+          ArrayList<Integer> children = graph.get(u);
+
+          for (int v : children) {
+            if (colour[v] == 1) {
+              return true; // Back-arc detected, graph has a cycle
+            } else if (colour[v] == 0) {
+              stack.push(v);
+              allChildrenVisited = false;
+              break; // Stop looking for other children once you find an unvisited child
+            }
+          }
+
+          if (allChildrenVisited) {
+            colour[u] = 2; // Mark vertex as visited
+            stack.pop(); // Remove it from the stack
+          }
+        }
+      }
+    }
+
+    return false;
   }
 }
