@@ -226,6 +226,12 @@ public class GraphOperations {
     return reversed;
   }
 
+  /**
+   * Find the strongly connected components of a graph
+   *
+   * @param graph
+   * @return
+   */
   public static ArrayList<ArrayList<Integer>> findStronglyConnectedComponents(
       HashMap<Integer, ArrayList<Integer>> graph) {
     if (graph == null || graph.isEmpty()) {
@@ -292,6 +298,12 @@ public class GraphOperations {
     return components;
   }
 
+  /**
+   * Find the index of the maximum value in an array
+   *
+   * @param array
+   * @return
+   */
   private static int findMaxIndex(int[] array) {
     int max = Integer.MIN_VALUE;
     int maxIndex = -1;
@@ -304,6 +316,12 @@ public class GraphOperations {
     return maxIndex;
   }
 
+  /**
+   * Find the maximum matching of a bipartite graph
+   *
+   * @param graph
+   * @return
+   */
   public static ArrayList<int[]> maximalMatching(HashMap<Integer, ArrayList<Integer>> graph) {
     // Simple greedy algorithm
     // Iterate through each vertex and add it to the matching if it is not already matched
@@ -320,5 +338,42 @@ public class GraphOperations {
       }
     }
     return matching;
+  }
+
+  /**
+   * Check if a graph is bipartite
+   * 
+   * @param graph
+   * @return
+   */
+  public static boolean isBipartite(HashMap<Integer, ArrayList<Integer>> graph) {
+    if (graph == null || graph.isEmpty()) {
+      return false;
+    }
+    int[] set = new int[graph.size()];  // 0 = unassigned, 1 = set 1, 2 = set 2
+    LinkedList<Integer> queue = new LinkedList<Integer>();
+
+    for (int s = 0; s < graph.size(); s++) {
+      if (set[s] != 0) continue; // Skip vertices already assigned to a set
+      queue.add(s);
+      set[s] = 1; // Assign the first vertex to set 1
+
+      while (!queue.isEmpty()) {
+        int u = queue.poll();
+        int currentSet = set[u];
+        int nextSet = (currentSet == 1) ? 2 : 1;  // Alternate between sets 1 and 2
+
+        for (int v : graph.get(u)) {
+          if (set[v] == 0) {
+            set[v] = nextSet;
+            queue.add(v);
+          } else if (set[v] != nextSet) {
+            return false; // Conflict, not bipartite
+          }
+        }
+      }
+    }
+
+    return true;
   }
 }
