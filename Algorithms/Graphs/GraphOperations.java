@@ -155,4 +155,34 @@ public class GraphOperations {
     }
     return degree;
   }
+
+  public static int[] findTopologicalOrderingIndegree(HashMap<Integer, ArrayList<Integer>> graph) {
+    if (graph == null || graph.isEmpty()) {
+      return null;
+    }
+    int[] indegrees = new int[graph.size()];
+    for (int i = 0; i < graph.size(); i++) {
+      indegrees[i] = findIndegreeList(graph, i);
+    }
+    int[] order = new int[graph.size()];
+    Queue<Integer> q = new LinkedList<Integer>();
+    for (int j = 0; j < graph.size(); j++) {
+      if (indegrees[j] == 0) {
+        q.add(j);
+      }
+    }
+    int count = 0;
+    while (!q.isEmpty()) {
+      int current = q.poll();
+      order[count] = current;
+      count++;
+      for (int child : graph.get(current)) {
+        indegrees[child]--;
+        if (indegrees[child] == 0) {
+          q.add(child);
+        }
+      }
+    }
+    return order;
+  }
 }
