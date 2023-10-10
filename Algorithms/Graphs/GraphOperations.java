@@ -222,4 +222,81 @@ public class GraphOperations {
     }
     return reversed;
   }
+
+  public static ArrayList<ArrayList<Integer>> findStronglyConnectedComponents(
+      HashMap<Integer, ArrayList<Integer>> graph) {
+    if (graph == null || graph.isEmpty()) {
+      return null;
+    }
+    ArrayList<ArrayList<Integer>> components = new ArrayList<ArrayList<Integer>>();
+    HashMap<Integer, ArrayList<Integer>> reversed = reverseGraphList(graph);
+    // DFS on reversed graph
+    Stack<Integer> stack = new Stack<>();
+    int[] colour = new int[graph.size()];
+    int[] finish = new int[graph.size()];
+    int time = 0;
+    for (int s = 0; s < graph.size(); s++) {
+      if (colour[s] == 0) {
+        stack.push(s);
+        while (!stack.isEmpty()) {
+          int u = stack.peek();
+          // If the vertex is unvisited
+          if (colour[u] == 0) {
+            colour[u] = 1;
+          }
+          boolean allChildrenVisited = true;
+          ArrayList<Integer> children = reversed.get(u);
+          for (int child : children) {
+            if (colour[child] == 0) {
+              stack.push(child);
+              allChildrenVisited = false;
+              break; // Stop looking for other children once you find an unvisited child
+            }
+          }
+
+          if (allChildrenVisited) {
+            colour[u] = 2; // Mark vertex as visited
+            stack.pop();
+            finish[u] = time; // Remove it from the stack
+            time++;
+          }
+        }
+      }
+    }
+    // DFS on original graph
+    ArrayList<Integer> visited = new ArrayList<Integer>();
+    for (int i = 0; i < graph.size(); i++) {
+      int v = findMaxIndex(finish);
+      finish[v] = -1;
+      if (!visited.contains(v)) {
+        ArrayList<Integer> component = new ArrayList<Integer>();
+        Stack<Integer> s = new Stack<Integer>();
+        s.push(v);
+        while (!s.isEmpty()) {
+          int current = s.pop();
+          if (!visited.contains(current)) {
+            visited.add(current);
+            component.add(current);
+            for (int child : graph.get(current)) {
+              s.push(child);
+            }
+          }
+        }
+        components.add(component);
+      }
+    }
+    return components;
+  }
+
+  private static int findMaxIndex(int[] array) {
+    int max = Integer.MIN_VALUE;
+    int maxIndex = -1;
+    for (int i = 0; i < array.length; i++) {
+      if (array[i] > max) {
+        maxIndex = i;
+        max = array[i];
+      }
+    }
+    return maxIndex;
+  }
 }
