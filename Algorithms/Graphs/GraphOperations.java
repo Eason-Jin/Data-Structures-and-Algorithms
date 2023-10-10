@@ -355,17 +355,15 @@ public class GraphOperations {
     }
     int[] set = new int[graph.size()]; // 0 = unassigned, 1 = set 1, 2 = set 2
     LinkedList<Integer> queue = new LinkedList<Integer>();
-
+    // BFS to assign vertices to sets
     for (int s = 0; s < graph.size(); s++) {
       if (set[s] != 0) continue; // Skip vertices already assigned to a set
       queue.add(s);
       set[s] = 1; // Assign the first vertex to set 1
-
       while (!queue.isEmpty()) {
         int u = queue.poll();
         int currentSet = set[u];
         int nextSet = (currentSet == 1) ? 2 : 1; // Alternate between sets 1 and 2
-
         for (int v : graph.get(u)) {
           if (set[v] == 0) {
             set[v] = nextSet;
@@ -389,22 +387,18 @@ public class GraphOperations {
   public static boolean isCyclic(HashMap<Integer, ArrayList<Integer>> graph) {
     Stack<Integer> stack = new Stack<>();
     int[] colour = new int[graph.size()];
-
+    // DFS to detect back-arcs
     for (int s = 0; s < graph.size(); s++) {
       if (colour[s] == 0) {
         stack.push(s);
-
         while (!stack.isEmpty()) {
           int u = stack.peek();
-
           // If the vertex is unvisited
           if (colour[u] == 0) {
             colour[u] = 1;
           }
-
           boolean allChildrenVisited = true;
           ArrayList<Integer> children = graph.get(u);
-
           for (int v : children) {
             if (colour[v] == 1) {
               return true; // Back-arc detected, graph has a cycle
@@ -414,7 +408,6 @@ public class GraphOperations {
               break; // Stop looking for other children once you find an unvisited child
             }
           }
-
           if (allChildrenVisited) {
             colour[u] = 2; // Mark vertex as visited
             stack.pop(); // Remove it from the stack
