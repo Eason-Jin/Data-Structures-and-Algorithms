@@ -3,8 +3,10 @@ package Graphs;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Set;
 import java.util.Stack;
 
 public class GraphOperations {
@@ -14,7 +16,7 @@ public class GraphOperations {
    * @param graph
    * @return
    */
-  public static ArrayList<Integer> DfsList(HashMap<Integer, ArrayList<Integer>> graph, int start) {
+  public static ArrayList<Integer> Dfs(HashMap<Integer, ArrayList<Integer>> graph, int start) {
     if (graph == null || graph.isEmpty()) {
       return null;
     }
@@ -39,7 +41,7 @@ public class GraphOperations {
    * @param graph
    * @return
    */
-  public static ArrayList<Integer> BfsList(HashMap<Integer, ArrayList<Integer>> graph, int start) {
+  public static ArrayList<Integer> Bfs(HashMap<Integer, ArrayList<Integer>> graph, int start) {
     if (graph == null || graph.isEmpty()) {
       return null;
     }
@@ -66,7 +68,7 @@ public class GraphOperations {
    * @param end
    * @return
    */
-  public static int findGirthList(HashMap<Integer, ArrayList<Integer>> graph) {
+  public static int findGirth(HashMap<Integer, ArrayList<Integer>> graph) {
     if (graph == null || graph.isEmpty()) {
       return 0;
     }
@@ -154,7 +156,7 @@ public class GraphOperations {
    * @param vertex
    * @return
    */
-  public static int findIndegreeList(HashMap<Integer, ArrayList<Integer>> graph, int vertex) {
+  public static int findIndegree(HashMap<Integer, ArrayList<Integer>> graph, int vertex) {
     int degree = 0;
     for (int i = 0; i < graph.size(); i++) {
       if (graph.get(i).contains(vertex)) {
@@ -177,7 +179,7 @@ public class GraphOperations {
     // Find indegrees
     int[] indegrees = new int[graph.size()];
     for (int i = 0; i < graph.size(); i++) {
-      indegrees[i] = findIndegreeList(graph, i);
+      indegrees[i] = findIndegree(graph, i);
     }
     int[] order = new int[graph.size()];
     Queue<Integer> q = new LinkedList<Integer>();
@@ -207,7 +209,7 @@ public class GraphOperations {
    * @param graph
    * @return
    */
-  public static HashMap<Integer, ArrayList<Integer>> reverseGraphList(
+  public static HashMap<Integer, ArrayList<Integer>> reverseGraph(
       HashMap<Integer, ArrayList<Integer>> graph) {
     if (graph == null || graph.isEmpty()) {
       return null;
@@ -230,7 +232,7 @@ public class GraphOperations {
       return null;
     }
     ArrayList<ArrayList<Integer>> components = new ArrayList<ArrayList<Integer>>();
-    HashMap<Integer, ArrayList<Integer>> reversed = reverseGraphList(graph);
+    HashMap<Integer, ArrayList<Integer>> reversed = reverseGraph(graph);
     // DFS on reversed graph
     Stack<Integer> stack = new Stack<>();
     int[] colour = new int[graph.size()];
@@ -300,5 +302,23 @@ public class GraphOperations {
       }
     }
     return maxIndex;
+  }
+
+  public static ArrayList<int[]> maximalMatching(HashMap<Integer, ArrayList<Integer>> graph) {
+    // Simple greedy algorithm
+    // Iterate through each vertex and add it to the matching if it is not already matched
+    ArrayList<int[]> matching = new ArrayList<int[]>();
+    Set<Integer> used = new HashSet<Integer>();
+    for (int i = 0; i < graph.size(); i++) {
+      for (int j = 0; j < graph.get(i).size(); j++) {
+        int[] edge = {i, graph.get(i).get(j)};
+        if (!used.contains(i) && !used.contains(graph.get(i).get(j))) {
+          matching.add(edge);
+          used.add(i);
+          used.add(graph.get(i).get(j));
+        }
+      }
+    }
+    return matching;
   }
 }
