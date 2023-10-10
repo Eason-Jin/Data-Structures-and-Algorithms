@@ -199,4 +199,27 @@ public class GraphOperations {
     }
     return order;
   }
+
+  /**
+   * Find the reverse of a list graph
+   *
+   * @param graph
+   * @return
+   */
+  public static HashMap<Integer, ArrayList<Integer>> reverseGraphList(
+      HashMap<Integer, ArrayList<Integer>> graph) {
+    if (graph == null || graph.isEmpty()) {
+      return null;
+    }
+    HashMap<Integer, ArrayList<Integer>> reversed = new HashMap<Integer, ArrayList<Integer>>();
+    for (int i = 0; i < graph.size(); i++) {
+      for (int j = 0; j < graph.get(i).size(); j++) {
+        if (!reversed.containsKey(graph.get(i).get(j))) {
+          reversed.put(graph.get(i).get(j), new ArrayList<Integer>());
+        }
+        reversed.get(graph.get(i).get(j)).add(i);
+      }
+    }
+    return reversed;
+  }
 }
