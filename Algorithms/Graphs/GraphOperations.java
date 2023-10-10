@@ -323,6 +323,9 @@ public class GraphOperations {
    * @return
    */
   public static ArrayList<int[]> maximalMatching(HashMap<Integer, ArrayList<Integer>> graph) {
+    if (graph == null || graph.isEmpty() || !isBipartite(graph)) {
+      return null;
+    }
     // Simple greedy algorithm
     // Iterate through each vertex and add it to the matching if it is not already matched
     ArrayList<int[]> matching = new ArrayList<int[]>();
