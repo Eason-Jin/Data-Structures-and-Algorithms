@@ -145,4 +145,14 @@ public class GraphOperations {
     }
     return orderArray;
   }
+
+  public static int findIndegreeList(HashMap<Integer, ArrayList<Integer>> graph, int vertex) {
+    int degree = 0;
+    for (int i = 0; i < graph.size(); i++) {
+      if (graph.get(i).contains(vertex)) {
+        degree++;
+      }
+    }
+    return degree;
+  }
 }
