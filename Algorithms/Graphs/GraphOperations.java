@@ -419,8 +419,16 @@ public class GraphOperations {
     return false;
   }
 
+  /**
+   * Find the all the augmented paths in a bipartite graph
+   * @param graph
+   * @return
+   */
   public static ArrayList<ArrayList<Integer>> findAugmentingPaths(
       HashMap<Integer, ArrayList<Integer>> graph) {
+    if (graph == null || graph.isEmpty() || !isBipartite(graph)) {
+      return null;
+    }
     ArrayList<ArrayList<Integer>> augmentingPaths = new ArrayList<>();
     ArrayList<int[]> matching = maximalMatching(graph);
     ArrayList<Integer> unmatched = findUnmatchedVertices(graph, matching);
@@ -468,6 +476,14 @@ public class GraphOperations {
     return augmentingPaths;
   }
 
+  /**
+   * Check if an edge is in a matching
+   * 
+   * @param matching
+   * @param u
+   * @param v
+   * @return
+   */
   private static boolean isMatchingEdge(ArrayList<int[]> matching, int u, int v) {
     for (int[] edge : matching) {
       int first = edge[0];
@@ -480,6 +496,13 @@ public class GraphOperations {
     return false;
   }
 
+  /**
+   * Find the unmatched vertices in a bipartite graph
+   * 
+   * @param graph
+   * @param matching
+   * @return
+   */
   private static ArrayList<Integer> findUnmatchedVertices(
       HashMap<Integer, ArrayList<Integer>> graph, ArrayList<int[]> matching) {
     ArrayList<Integer> unmatched = new ArrayList<Integer>();
