@@ -1,6 +1,7 @@
 package Graphs;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -334,6 +335,7 @@ public class GraphOperations {
       for (int j = 0; j < graph.get(i).size(); j++) {
         int[] edge = {i, graph.get(i).get(j)};
         if (!used.contains(i) && !used.contains(graph.get(i).get(j))) {
+          Arrays.sort(edge);
           matching.add(edge);
           used.add(i);
           used.add(graph.get(i).get(j));
@@ -374,7 +376,6 @@ public class GraphOperations {
         }
       }
     }
-
     return true;
   }
 
@@ -415,7 +416,80 @@ public class GraphOperations {
         }
       }
     }
-
     return false;
+  }
+
+  public static ArrayList<ArrayList<Integer>> findAugmentingPaths(
+      HashMap<Integer, ArrayList<Integer>> graph) {
+    ArrayList<ArrayList<Integer>> augmentingPaths = new ArrayList<>();
+    ArrayList<int[]> matching = maximalMatching(graph);
+    ArrayList<Integer> unmatched = findUnmatchedVertices(graph, matching);
+    // Find augmenting paths starting from unmatched vertices
+    for (int start : unmatched) {
+      // Perform BFS to find an augmenting path starting from each unmatched vertex
+      Queue<Integer> queue = new LinkedList<>();
+      boolean[] visited = new boolean[graph.size()];
+      int[] parent = new int[graph.size()];
+      ArrayList<Integer> path = new ArrayList<>();
+      queue.add(start);
+      visited[start] = true;
+      while (!queue.isEmpty()) {
+        int current = queue.poll();
+        for (int child : graph.get(current)) {
+          if (!visited[child]) {
+            visited[child] = true;
+            parent[child] = current;
+            queue.add(child);
+            if (isMatchingEdge(matching, current, child)) {
+              if (!visited[child]) {
+                visited[child] = true;
+                parent[child] = current;
+                queue.add(child);
+              }
+            } else {
+              // Add to the path but continue searching
+              while (child != start) {
+                path.add(child);
+                child = parent[child];
+              }
+              path.add(start); // Add the start vertex to complete the path
+              if (path.size() > 2
+                  && unmatched.contains(path.get(0))
+                  && unmatched.contains(path.get(path.size() - 1))) {
+                augmentingPaths.add(new ArrayList<>(path));
+              }
+              path.clear(); // Clear the path for the next augmenting path
+            }
+          }
+        }
+      }
+    }
+
+    return augmentingPaths;
+  }
+
+  private static boolean isMatchingEdge(ArrayList<int[]> matching, int u, int v) {
+    for (int[] edge : matching) {
+      int first = edge[0];
+      int second = edge[1];
+
+      if ((first == u && second == v) || (first == v && second == u)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private static ArrayList<Integer> findUnmatchedVertices(
+      HashMap<Integer, ArrayList<Integer>> graph, ArrayList<int[]> matching) {
+    ArrayList<Integer> unmatched = new ArrayList<Integer>();
+    for (int i = 0; i < graph.size(); i++) {
+      unmatched.add(i);
+    }
+    for (int[] edge : matching) {
+      unmatched.remove((Integer) edge[0]);
+      unmatched.remove((Integer) edge[1]);
+    }
+    return unmatched;
   }
 }
