@@ -557,17 +557,7 @@ public class GraphOperations {
    * @return
    */
   public static int[][] dijkstra(HashMap<Integer, ArrayList<int[]>> graph) {
-    int[][] dist = new int[graph.size()][graph.size()];
-    // Initialise all values to infinity
-    for (int i = 0; i < graph.size(); i++) {
-      for (int j = 0; j < graph.size(); j++) {
-        dist[i][j] = Integer.MAX_VALUE;
-      }
-    }
-    // A vertex to itself is 0
-    for (int i = 0; i < graph.size(); i++) {
-      dist[i][i] = 0;
-    }
+    int[][] dist = initDist(graph.size());
     // Perform BFS from each vertex
     for (int i = 0; i < graph.size(); i++) {
       Queue<Integer> queue = new LinkedList<Integer>();
@@ -640,6 +630,62 @@ public class GraphOperations {
     int[][] dist = new int[graph.size()][graph.size()];
     for (int v = 0; v < graph.size(); v++) {
       dist[v] = bellmanFordOneVertex(graph, v);
+    }
+    return dist;
+  }
+
+  /**
+   * Find the all shortest paths between two vertices in a graph using Floyd Warshall's algorithm
+   *
+   * @param graph
+   * @return
+   */
+  public static int[][] floydWarshall(HashMap<Integer, ArrayList<int[]>> graph) {
+    int[][] dist = initDist(graph.size());
+    // Initialise the distances
+    for (int i = 0; i < graph.size(); i++) {
+      for (int[] child : graph.get(i)) {
+        int vertex = child[0];
+        int weight = child[1];
+        dist[i][vertex] = weight;
+      }
+    }
+    // Perform the algorithm
+    for (int intermediate = 0; intermediate < graph.size(); intermediate++) {
+      for (int source = 0; source < graph.size(); source++) {
+        for (int destination = 0; destination < graph.size(); destination++) {
+          // If the intermediate vertex is reachable from both the source and destination
+          if (dist[source][intermediate] != Integer.MAX_VALUE
+              && dist[intermediate][destination] != Integer.MAX_VALUE) {
+                // Compare direct path with indirect path through the intermediate vertex
+            dist[source][destination] =
+                Math.min(
+                    dist[source][destination],
+                    dist[source][intermediate] + dist[intermediate][destination]);
+          }
+        }
+      }
+    }
+    return dist;
+  }
+
+  /**
+   * Initialise the distance matrix
+   *
+   * @param size
+   * @return
+   */
+  private static int[][] initDist(int size) {
+    int[][] dist = new int[size][size];
+    // Initialise all values to infinity
+    for (int i = 0; i < size; i++) {
+      for (int j = 0; j < size; j++) {
+        dist[i][j] = Integer.MAX_VALUE;
+      }
+    }
+    // A vertex to itself is 0
+    for (int i = 0; i < size; i++) {
+      dist[i][i] = 0;
     }
     return dist;
   }
