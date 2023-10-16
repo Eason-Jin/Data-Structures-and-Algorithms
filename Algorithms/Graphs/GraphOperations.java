@@ -515,4 +515,36 @@ public class GraphOperations {
     }
     return unmatched;
   }
+
+  /**
+   * Find the degrees of separation of a graph
+   * 
+   * @param graph
+   * @return
+   */
+  public static int findDegreesOfSeparation(HashMap<Integer, ArrayList<Integer>> graph) {
+    // Perform BFS at every vertex
+    int max = 0;
+    for (int vertex = 0; vertex < graph.size(); vertex++) {
+      int[] dist = new int[graph.size()];
+      Queue<Integer> queue = new LinkedList<Integer>();
+      queue.add(vertex);
+      while (!queue.isEmpty()) {
+        int current = queue.poll();
+        for (int child : graph.get(current)) {
+          if (dist[child] == 0) {
+            dist[child] = dist[current] + 1;
+            queue.add(child);
+          }
+        }
+      }
+
+      for (int i = 0; i < graph.size(); i++) {
+        if (dist[i] > max) {
+          max = dist[i];
+        }
+      }
+    }
+    return max;
+  }
 }
