@@ -550,8 +550,8 @@ public class GraphOperations {
   }
 
   /**
-   * Find the shortest path between two vertices in a graph with no negative cycles using Dijsktra's
-   * algorithm
+   * Find the shortest path between two vertices in a graph with no negative weights using
+   * Dijsktra's algorithm
    *
    * @param graph
    * @return
@@ -584,6 +584,62 @@ public class GraphOperations {
           }
         }
       }
+    }
+    return dist;
+  }
+
+  /**
+   * Find the shortest path between two vertices in a graph with no negative cycles using Bellman
+   * Ford's algorithm
+   *
+   * @param graph
+   * @param source
+   * @return
+   */
+  public static int[] bellmanFordOneVertex(HashMap<Integer, ArrayList<int[]>> graph, int source) {
+    int[] dist = new int[graph.size()];
+    // Initialize distances to infinity
+    for (int i = 0; i < graph.size(); i++) {
+      dist[i] = Integer.MAX_VALUE;
+    }
+    // The distance to the source vertex is 0
+    dist[source] = 0;
+    // Check all edges
+    for (int i = 0; i < graph.size() - 1; i++) {
+      for (int v = 0; v < graph.size(); v++) {
+        for (int[] child : graph.get(v)) {
+          int vertex = child[0];
+          int weight = child[1];
+          if (dist[vertex] > dist[v] + weight) {
+            dist[vertex] = dist[v] + weight;
+          }
+        }
+      }
+    }
+    // Check for negative-weight cycles
+    for (int v = 0; v < graph.size(); v++) {
+      for (int[] child : graph.get(v)) {
+        int vertex = child[0];
+        int weight = child[1];
+        if (dist[vertex] > dist[v] + weight) {
+          throw new RuntimeException("Negative-weight cycle detected");
+        }
+      }
+    }
+    return dist;
+  }
+
+  /**
+   * Find the shortest path for all vertices in a graph with no negative cycles using Bellman Ford's
+   * algorithm
+   *
+   * @param graph
+   * @return
+   */
+  public static int[][] bellmanFord(HashMap<Integer, ArrayList<int[]>> graph) {
+    int[][] dist = new int[graph.size()][graph.size()];
+    for (int v = 0; v < graph.size(); v++) {
+      dist[v] = bellmanFordOneVertex(graph, v);
     }
     return dist;
   }
