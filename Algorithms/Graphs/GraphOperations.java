@@ -421,6 +421,7 @@ public class GraphOperations {
 
   /**
    * Find the all the augmented paths in a bipartite graph
+   *
    * @param graph
    * @return
    */
@@ -478,7 +479,7 @@ public class GraphOperations {
 
   /**
    * Check if an edge is in a matching
-   * 
+   *
    * @param matching
    * @param u
    * @param v
@@ -498,7 +499,7 @@ public class GraphOperations {
 
   /**
    * Find the unmatched vertices in a bipartite graph
-   * 
+   *
    * @param graph
    * @param matching
    * @return
@@ -518,7 +519,7 @@ public class GraphOperations {
 
   /**
    * Find the degrees of separation of a graph
-   * 
+   *
    * @param graph
    * @return
    */
@@ -546,5 +547,44 @@ public class GraphOperations {
       }
     }
     return max;
+  }
+
+  /**
+   * Find the shortest path between two vertices in a graph with no negative cycles using Dijsktra's
+   * algorithm
+   *
+   * @param graph
+   * @return
+   */
+  public static int[][] dijkstra(HashMap<Integer, ArrayList<int[]>> graph) {
+    int[][] dist = new int[graph.size()][graph.size()];
+    // Initialise all values to infinity
+    for (int i = 0; i < graph.size(); i++) {
+      for (int j = 0; j < graph.size(); j++) {
+        dist[i][j] = Integer.MAX_VALUE;
+      }
+    }
+    // A vertex to itself is 0
+    for (int i = 0; i < graph.size(); i++) {
+      dist[i][i] = 0;
+    }
+    // Perform BFS from each vertex
+    for (int i = 0; i < graph.size(); i++) {
+      Queue<Integer> queue = new LinkedList<Integer>();
+      queue.add(i);
+      while (!queue.isEmpty()) {
+        int current = queue.poll();
+        for (int[] child : graph.get(current)) {
+          int vertex = child[0];
+          int weight = child[1];
+          // Update the distance if it is shorter than what is already stored
+          if (dist[i][vertex] > dist[i][current] + weight) {
+            dist[i][vertex] = dist[i][current] + weight;
+            queue.add(vertex);
+          }
+        }
+      }
+    }
+    return dist;
   }
 }
