@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Set;
 import java.util.Stack;
@@ -657,7 +658,7 @@ public class GraphOperations {
           // If the intermediate vertex is reachable from both the source and destination
           if (dist[source][intermediate] != Integer.MAX_VALUE
               && dist[intermediate][destination] != Integer.MAX_VALUE) {
-                // Compare direct path with indirect path through the intermediate vertex
+            // Compare direct path with indirect path through the intermediate vertex
             dist[source][destination] =
                 Math.min(
                     dist[source][destination],
@@ -688,5 +689,42 @@ public class GraphOperations {
       dist[i][i] = 0;
     }
     return dist;
+  }
+
+  public static int[] minimumSpanningTreePrim(HashMap<Integer, ArrayList<int[]>> graph) {
+    int n = graph.size();
+    int[] pred = new int[n];
+    int[] weight = new int[n];
+    boolean[] visited = new boolean[n];
+
+    for (int i = 0; i < n; i++) {
+      weight[i] = Integer.MAX_VALUE;
+      visited[i] = false;
+      pred[i] = -1;
+    }
+
+    PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[1] - b[1]); // Sort by weight
+    pq.offer(new int[] {0, 0}); // Start with vertex 0
+
+    while (!pq.isEmpty()) {
+      int[] current = pq.poll();
+      int u = current[0];
+      visited[u] = true;
+      // PFS
+      for (int[] child : graph.get(u)) {
+        int currentVertex = child[0];
+        int currentWeight = child[1];
+        // If the vertex is unvisited and the weight is less than the current weight
+        if (!visited[currentVertex] && currentWeight < weight[currentVertex]) {
+          // Update the weight and predecessor
+          pred[currentVertex] = u;
+          weight[currentVertex] = currentWeight;
+          // Add the vertex to the queue
+          pq.offer(new int[] {currentVertex, weight[currentVertex]});
+        }
+      }
+    }
+
+    return pred;
   }
 }
