@@ -1,6 +1,7 @@
 package Graphs;
 
 import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -20,9 +21,14 @@ class GraphConverter {
    * @throws IOException
    * @throws NumberFormatException
    */
-  public static HashMap<Integer, ArrayList<Integer>> convertToAdjacencyList()
+  public static HashMap<Integer, ArrayList<Integer>> convertToAdjacencyList(boolean readFile)
       throws NumberFormatException, IOException {
-    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedReader br;
+        if (readFile) {
+            br = new BufferedReader(new FileReader("test.in"));
+        } else {
+            br = new BufferedReader(new InputStreamReader(System.in));
+        }
     int order = Integer.parseInt(br.readLine());
 
     if (order != 0) {
@@ -55,8 +61,13 @@ class GraphConverter {
    * @throws NumberFormatException
    * @throws IOException
    */
-  public static int[][] convertToAdjacencyMatrix(boolean isWeighted) throws NumberFormatException, IOException {
-    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+  public static int[][] convertToAdjacencyMatrix(boolean isWeighted, boolean readFile) throws NumberFormatException, IOException {
+    BufferedReader br;
+    if (readFile) {
+        br = new BufferedReader(new FileReader("test.in"));
+    } else {
+        br = new BufferedReader(new InputStreamReader(System.in));
+    }
     int order = Integer.parseInt(br.readLine());
 
     if (order != 0) {
@@ -83,9 +94,14 @@ class GraphConverter {
    * @throws IOException
    * @throws NumberFormatException
    */
-  public static HashMap<Integer, ArrayList<int[]>> convertToWeightedAdjacencyList()
+  public static HashMap<Integer, ArrayList<int[]>> convertToWeightedAdjacencyList(boolean readFile)
       throws NumberFormatException, IOException {
-    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    BufferedReader br;
+    if (readFile) {
+        br = new BufferedReader(new FileReader("test.in"));
+    } else {
+        br = new BufferedReader(new InputStreamReader(System.in));
+    }
     int order = Integer.parseInt(br.readLine());
 
     if (order != 0) {
@@ -120,4 +136,6 @@ class GraphConverter {
       return Integer.compare(o1[0], o2[0]);
     }
   }
+
+  
 }
