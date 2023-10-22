@@ -694,11 +694,12 @@ public class GraphOperations {
 
   /**
    * Find the minimum spanning tree of a graph using Prim's algorithm
-   * 
+   *
    * @param graph
    * @return
    */
-  public static int[] minimumSpanningTreePrim(HashMap<Integer, ArrayList<int[]>> graph) {
+  public static Pair<int[], Integer> minimumSpanningTreePrim(
+      HashMap<Integer, ArrayList<int[]>> graph) {
     int n = graph.size();
     int[] pred = new int[n];
     int[] weight = new int[n];
@@ -732,16 +733,24 @@ public class GraphOperations {
       }
     }
 
-    return pred;
+    int totalWeight = 0;
+    for (int w : weight) {
+      if (w != Integer.MAX_VALUE) {
+        totalWeight += w;
+      }
+    }
+
+    return new Pair<int[], Integer>(pred, totalWeight);
   }
 
   /**
    * Find the minimum spanning tree of a graph using Kruskal's algorithm
-   * 
+   *
    * @param graph
    * @return
    */
-  public static DisjointSet minimumSpanningTreeKruskal(HashMap<Integer, ArrayList<int[]>> graph) {
+  public static Pair<DisjointSet, Integer> minimumSpanningTreeKruskal(
+      HashMap<Integer, ArrayList<int[]>> graph) {
     // Initialize disjoint set for each vertex in its own set
     DisjointSet disjointSet = new DisjointSet(graph.size());
 
@@ -756,6 +765,8 @@ public class GraphOperations {
     }
     Collections.sort(edges, (a, b) -> Integer.compare(a[2], b[2]));
 
+    int totalWeight = 0; // Initialize the total weight to zero
+
     // Process each edge in increasing order of cost
     for (int[] edge : edges) {
       int u = edge[0];
@@ -764,9 +775,10 @@ public class GraphOperations {
       // If u and v are not in the same set, add the edge to the MST
       if (disjointSet.findParent(u) != disjointSet.findParent(v)) {
         disjointSet.union(u, v);
+        totalWeight += edge[2]; // Add the weight of the edge to the total weight
       }
     }
 
-    return disjointSet;
+    return new Pair<DisjointSet, Integer>(disjointSet, totalWeight);
   }
 }
