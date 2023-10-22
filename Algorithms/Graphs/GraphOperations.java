@@ -692,6 +692,12 @@ public class GraphOperations {
     return dist;
   }
 
+  /**
+   * Find the minimum spanning tree of a graph using Prim's algorithm
+   * 
+   * @param graph
+   * @return
+   */
   public static int[] minimumSpanningTreePrim(HashMap<Integer, ArrayList<int[]>> graph) {
     int n = graph.size();
     int[] pred = new int[n];
@@ -729,6 +735,12 @@ public class GraphOperations {
     return pred;
   }
 
+  /**
+   * Find the minimum spanning tree of a graph using Kruskal's algorithm
+   * 
+   * @param graph
+   * @return
+   */
   public static DisjointSet minimumSpanningTreeKruskal(HashMap<Integer, ArrayList<int[]>> graph) {
     // Initialize disjoint set for each vertex in its own set
     DisjointSet disjointSet = new DisjointSet(graph.size());
