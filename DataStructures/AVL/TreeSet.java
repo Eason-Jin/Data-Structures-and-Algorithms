@@ -1,4 +1,4 @@
-package DataStructures.BinarySearchTree;
+package DataStructures.AVL;
 
 public class TreeSet {
   Node root;
