@@ -1,3 +1,5 @@
+package DataStructures;
+
 public class DisjointSet {
   private int[] parent;
   private int[] height;

@@ -1,3 +1,5 @@
+package DataStructures;
+
 class UnionFind {
   int parent[];
   int height[];

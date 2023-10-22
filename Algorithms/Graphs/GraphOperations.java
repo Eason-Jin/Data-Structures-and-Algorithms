@@ -11,6 +11,8 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.Stack;
 
+import DataStructures.DisjointSet;
+
 public class GraphOperations {
   /**
    * Performs a depth first search on a graph and returns the order of the vertices visited
@@ -724,6 +726,14 @@ public class GraphOperations {
         }
       }
     }
+
+    return pred;
+  }
+
+  public static int[] minimumSpanningTreeKruskal(HashMap<Integer, ArrayList<int[]>> graph) {
+    int n = graph.size();
+    int[] pred = new int[n];
+    DisjointSet ds = new DisjointSet(n);
 
     return pred;
   }
