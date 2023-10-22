@@ -1,5 +1,6 @@
 package Graphs;
 
+import DataStructures.DisjointSet;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -10,8 +11,6 @@ import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Set;
 import java.util.Stack;
-
-import DataStructures.DisjointSet;
 
 public class GraphOperations {
   /**
@@ -730,11 +729,32 @@ public class GraphOperations {
     return pred;
   }
 
-  public static int[] minimumSpanningTreeKruskal(HashMap<Integer, ArrayList<int[]>> graph) {
-    int n = graph.size();
-    int[] pred = new int[n];
-    DisjointSet ds = new DisjointSet(n);
+  public static DisjointSet minimumSpanningTreeKruskal(HashMap<Integer, ArrayList<int[]>> graph) {
+    // Initialize disjoint set for each vertex in its own set
+    DisjointSet disjointSet = new DisjointSet(graph.size());
 
-    return pred;
+    // Sort the edges in increasing order of weight
+    ArrayList<int[]> edges = new ArrayList<>();
+    for (Integer current : graph.keySet()) {
+      for (int[] child : graph.get(current)) {
+        int vertex = child[0];
+        int weight = child[1];
+        edges.add(new int[] {current, vertex, weight});
+      }
+    }
+    Collections.sort(edges, (a, b) -> Integer.compare(a[2], b[2]));
+
+    // Process each edge in increasing order of cost
+    for (int[] edge : edges) {
+      int u = edge[0];
+      int v = edge[1];
+
+      // If u and v are not in the same set, add the edge to the MST
+      if (disjointSet.findParent(u) != disjointSet.findParent(v)) {
+        disjointSet.union(u, v);
+      }
+    }
+
+    return disjointSet;
   }
 }

@@ -20,12 +20,12 @@ public class DisjointSet {
     return parent[x];
   }
 
-  public boolean union(int x, int y) {
+  public void union(int x, int y) {
     int rootX = findParent(x);
     int rootY = findParent(y);
 
     if (rootX == rootY) {
-      return false; // x and y are already in the same set
+      return; // x and y are already in the same set
     }
 
     // Optimised join
@@ -37,7 +37,5 @@ public class DisjointSet {
       parent[rootY] = rootX;
       height[rootX]++;
     }
-
-    return true;
   }
 }
