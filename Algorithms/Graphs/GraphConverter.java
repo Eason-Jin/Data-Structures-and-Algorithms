@@ -29,7 +29,8 @@ class GraphConverter {
         } else {
             br = new BufferedReader(new InputStreamReader(System.in));
         }
-    int order = Integer.parseInt(br.readLine());
+    StringTokenizer st = new StringTokenizer(br.readLine());
+    int order = Integer.parseInt(st.nextToken());
 
     if (order != 0) {
       HashMap<Integer, ArrayList<Integer>> graph = new HashMap<Integer, ArrayList<Integer>>();
@@ -38,7 +39,7 @@ class GraphConverter {
       }
 
       for (int i = 0; i < order; i++) {
-        StringTokenizer st = new StringTokenizer(br.readLine());
+        st = new StringTokenizer(br.readLine());
 
         while (st.hasMoreTokens()) {
           graph.get(i).add(Integer.parseInt(st.nextToken()));
@@ -68,12 +69,13 @@ class GraphConverter {
     } else {
         br = new BufferedReader(new InputStreamReader(System.in));
     }
-    int order = Integer.parseInt(br.readLine());
+    StringTokenizer st = new StringTokenizer(br.readLine());
+    int order = Integer.parseInt(st.nextToken());
 
     if (order != 0) {
       int[][] graph = new int[order][order];
       for (int i = 0; i < order; i++) {
-        StringTokenizer st = new StringTokenizer(br.readLine());
+        st = new StringTokenizer(br.readLine());
         while (st.hasMoreTokens()) {
           graph[i][Integer.parseInt(st.nextToken())] = isWeighted? Integer.parseInt(st.nextToken()) : 1;
         }
@@ -98,11 +100,12 @@ class GraphConverter {
       throws NumberFormatException, IOException {
     BufferedReader br;
     if (readFile) {
-        br = new BufferedReader(new FileReader("test.in"));
+      br = new BufferedReader(new FileReader("Algorithms\\Graphs\\test.in"));
     } else {
         br = new BufferedReader(new InputStreamReader(System.in));
     }
-    int order = Integer.parseInt(br.readLine());
+    StringTokenizer st = new StringTokenizer(br.readLine());
+    int order = Integer.parseInt(st.nextToken());
 
     if (order != 0) {
       HashMap<Integer, ArrayList<int[]>> graph = new HashMap<Integer, ArrayList<int[]>>();
@@ -111,7 +114,7 @@ class GraphConverter {
       }
 
       for (int i = 0; i < order; i++) {
-        StringTokenizer st = new StringTokenizer(br.readLine());
+        st = new StringTokenizer(br.readLine());
 
         while (st.hasMoreTokens()) {
           int[] edge = new int[2];
