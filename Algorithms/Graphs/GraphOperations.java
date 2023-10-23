@@ -348,6 +348,76 @@ public class GraphOperations {
   }
 
   /**
+   * BFS. The diameter of the graph is the longest of these shortest paths between pairs of
+   * vertices.
+   *
+   * @param graph
+   * @return
+   */
+  public static int findDiameter(HashMap<Integer, ArrayList<Integer>> graph) {
+    int diameter = 0;
+
+    for (int startNode : graph.keySet()) {
+      Queue<Integer> queue = new LinkedList<>();
+      HashMap<Integer, Integer> distance = new HashMap<>();
+      queue.add(startNode);
+      distance.put(startNode, 0);
+
+      while (!queue.isEmpty()) {
+        int current = queue.poll();
+
+        for (int neighbor : graph.get(current)) {
+          if (!distance.containsKey(neighbor)) {
+            queue.add(neighbor);
+            distance.put(neighbor, distance.get(current) + 1);
+          }
+        }
+      }
+
+      // Find the maximum distance from the startNode
+      int maxDistance = Collections.max(distance.values());
+      diameter = Math.max(diameter, maxDistance);
+    }
+
+    return diameter;
+  }
+
+  /**
+   * BFS. The radius of the graph is the minimum of these longest shortest paths between pairs of
+   * vertices.
+   *
+   * @param graph
+   * @return
+   */
+  public static int findRadius(HashMap<Integer, ArrayList<Integer>> graph) {
+    int radius = Integer.MAX_VALUE;
+
+    for (int startNode : graph.keySet()) {
+      Queue<Integer> queue = new LinkedList<>();
+      HashMap<Integer, Integer> distance = new HashMap<>();
+      queue.add(startNode);
+      distance.put(startNode, 0);
+
+      while (!queue.isEmpty()) {
+        int current = queue.poll();
+
+        for (int neighbor : graph.get(current)) {
+          if (!distance.containsKey(neighbor)) {
+            queue.add(neighbor);
+            distance.put(neighbor, distance.get(current) + 1);
+          }
+        }
+      }
+
+      // Find the maximum distance from the startNode
+      int maxDistance = Collections.max(distance.values());
+      radius = Math.min(radius, maxDistance);
+    }
+
+    return radius;
+  }
+
+  /**
    * Check if a graph is bipartite
    *
    * @param graph
@@ -360,7 +430,7 @@ public class GraphOperations {
     int[] set = new int[graph.size()]; // 0 = unassigned, 1 = set 1, 2 = set 2
     LinkedList<Integer> queue = new LinkedList<Integer>();
     // BFS to assign vertices to sets
-    for (int s = 0; s < graph.size(); s++) {
+    for (int s : graph.keySet()) {
       if (set[s] != 0) continue; // Skip vertices already assigned to a set
       queue.add(s);
       set[s] = 1; // Assign the first vertex to set 1
@@ -391,7 +461,7 @@ public class GraphOperations {
     Stack<Integer> stack = new Stack<>();
     int[] colour = new int[graph.size()];
     // DFS to detect back-arcs
-    for (int s = 0; s < graph.size(); s++) {
+    for (int s : graph.keySet()) {
       if (colour[s] == 0) {
         stack.push(s);
         while (!stack.isEmpty()) {
@@ -528,7 +598,7 @@ public class GraphOperations {
   public static int findDegreesOfSeparation(HashMap<Integer, ArrayList<Integer>> graph) {
     // Perform BFS at every vertex
     int max = 0;
-    for (int vertex = 0; vertex < graph.size(); vertex++) {
+    for (int vertex : graph.keySet()) {
       int[] dist = new int[graph.size()];
       Queue<Integer> queue = new LinkedList<Integer>();
       queue.add(vertex);
@@ -561,7 +631,7 @@ public class GraphOperations {
   public static int[][] dijkstra(HashMap<Integer, ArrayList<int[]>> graph) {
     int[][] dist = initDist(graph.size());
     // Perform BFS from each vertex
-    for (int i = 0; i < graph.size(); i++) {
+    for (int i : graph.keySet()) {
       Queue<Integer> queue = new LinkedList<Integer>();
       queue.add(i);
       while (!queue.isEmpty()) {
