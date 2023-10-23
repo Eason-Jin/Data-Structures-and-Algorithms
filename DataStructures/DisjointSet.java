@@ -1,5 +1,8 @@
 package DataStructures;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 public class DisjointSet {
   private int[] parent;
   private int[] height;
@@ -14,15 +17,24 @@ public class DisjointSet {
   }
 
   public int findParent(int x) {
-    if (parent[x] != x) {
-      parent[x] = findParent(parent[x]); // Path compression
-    }
     return parent[x];
   }
 
+  public int findRoot(int x) {
+    int root = x;
+    while (root != parent[root]) {
+      root = parent[root];
+    }
+    return root;
+  }
+
+  public boolean isSameSet(int x, int y) {
+    return findRoot(x) == findRoot(y);
+  }
+
   public void union(int x, int y) {
-    int rootX = findParent(x);
-    int rootY = findParent(y);
+    int rootX = findRoot(x);
+    int rootY = findRoot(y);
 
     if (rootX == rootY) {
       return; // x and y are already in the same set
@@ -38,4 +50,25 @@ public class DisjointSet {
       height[rootX]++;
     }
   }
+
+  private ArrayList<Integer> findRoots() {
+    ArrayList<Integer> roots = new ArrayList<Integer>();
+    for (int i = 0; i < parent.length; i++) {
+      if (parent[i] == i) {
+        roots.add(i);
+      }
+    }
+    return roots;
+  }
+
+  private ArrayList<Integer> findChildren(int v) {
+    ArrayList<Integer> children = new ArrayList<Integer>();
+    for (int i = 0; i < parent.length; i++) {
+      if (parent[i] == v) {
+        children.add(i);
+      }
+    }
+    return children;
+  }
+  // TODO: Add print method
 }

@@ -773,7 +773,7 @@ public class GraphOperations {
       int v = edge[1];
 
       // If u and v are not in the same set, add the edge to the MST
-      if (disjointSet.findParent(u) != disjointSet.findParent(v)) {
+      if (!disjointSet.isSameSet(u, v)) {
         disjointSet.union(u, v);
         totalWeight += edge[2]; // Add the weight of the edge to the total weight
       }
