@@ -25,7 +25,7 @@ class GraphConverter {
       throws NumberFormatException, IOException {
         BufferedReader br;
         if (readFile) {
-            br = new BufferedReader(new FileReader("test.in"));
+            br = new BufferedReader(new FileReader("Algorithms\\Graphs\\test.in"));
         } else {
             br = new BufferedReader(new InputStreamReader(System.in));
         }
@@ -65,7 +65,7 @@ class GraphConverter {
   public static int[][] convertToAdjacencyMatrix(boolean isWeighted, boolean readFile) throws NumberFormatException, IOException {
     BufferedReader br;
     if (readFile) {
-        br = new BufferedReader(new FileReader("test.in"));
+        br = new BufferedReader(new FileReader("Algorithms\\Graphs\\test.in"));
     } else {
         br = new BufferedReader(new InputStreamReader(System.in));
     }
